@@ -28,22 +28,35 @@ export class CommentsComponent implements OnInit {
   }
   replyingToComment: comment_model = new comment_model();
   replyingToCommentIndex: number = 0;
-  sortDescending: boolean = false;
-  sortAscending: boolean = true;
+  sortDescending: boolean = true;
+  sortAscending: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    // if(this.allComments[0].replies[0].name == ''){
-    //   this.allComments[0].replies.splice(0, 0);
-    // }
-    debugger
     if (localStorage.getItem("allComments")) {
       this.allComments = JSON.parse(localStorage.getItem("allComments") || JSON.stringify(new comment_model()));
+      this.disableEditOptions();
     }
     // this.user_name = "Gaurav";
     // this.comment_text = "This is a comment";
     // this.postComment();
+  }
+
+  disableEditOptions(){
+    this.allComments.forEach((val) => {
+      if(val.isReplying){
+        val.isReplying = false;
+      }
+      if(val.isEditingComment){
+        val.isEditingComment = false;
+      }
+      val.replies.forEach((res) => {
+        if(res.isEditingReply){
+          res.isEditingReply = false;
+        }
+      })
+    })
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -79,6 +92,7 @@ export class CommentsComponent implements OnInit {
   postComment() {
     this.comment_model.uname = this.user_name;
     this.comment_model.comm_txt = this.comment_text;
+    this.comment_model.replies = []
     this.allComments.push(this.comment_model);
     this.resetModel();
     this.resetInputs();
@@ -90,9 +104,12 @@ export class CommentsComponent implements OnInit {
     this.replyingToCommentIndex = ind;
   }
 
+  replyCancelled(){
+    this.replyingToComment.isReplying = false;
+  }
+
   replyPosted(event: any) {
     this.allComments[this.replyingToCommentIndex].replies.push(event);
-    console.log(this.allComments);
     this.replyingToComment.isReplying = false;
   }
 

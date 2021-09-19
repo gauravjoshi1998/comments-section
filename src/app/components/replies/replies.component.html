@@ -2,7 +2,7 @@
     <div class="header-section">
         <h4>Reply</h4>
     </div>
-    <div class="inp-section">
+    <div class="inp-section w-98">
         <div class="rep-name-inp-div">
             <input class="rep-name-inp w-100" type="text" placeholder="Name" [(ngModel)]="reply_name">
         </div>
@@ -10,7 +10,11 @@
             <textarea class="rep-txt w-100" name="reply" id="reply" cols="30" rows="5" [(ngModel)]="reply_text"
                 placeholder="Reply"></textarea>
         </div>
-        <div class="post-rep-btn disp-flex jcfe">
+        <div class="post-rep-btn disp-flex jcfe aic">
+            <!-- Uncomment to enable cancel button -->
+            <!-- <div class="blue-txt cancel-div cp" (click)="cancelReply()">
+                Cancel
+            </div> -->
             <button class="app-btn" (click)="postReply()" [disabled]="reply_name == '' || reply_text == ''">POST</button>
         </div>
     </div>

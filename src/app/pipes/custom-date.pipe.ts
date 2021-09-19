@@ -4,13 +4,15 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'customDate'
 })
 export class CustomDatePipe implements PipeTransform {
-  transform(value: Date): string {
+  transform(value: any): string {
+    value = value.toString();
+    value = new Date(value)
     if (!value) {
       return '';
     }
-   let months= ["January","February","March","April","May","June","July",
-           "August","September","October","November","December"]
-    return `${value.getDate()}${this.nth(value.getDate)} ${months[value.getMonth()]} ${value.getFullYear()}`;
+   let months= ["Jan","Feb","Mar","Apr","May","June","July",
+           "Aug","Sept","Oct","Nov","Dec"]
+    return `${value.getDate()}${this.nth(value.getDate)} ${months[value.getMonth().toString()]} ${value.getFullYear()}`;
   }
 
  nth(d: any) {

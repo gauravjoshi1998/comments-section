@@ -18,13 +18,13 @@
             </div>
         </div>
 
-        <div class="bottom-section">
-            <div (click)="sortAscending ? sortArrayInDescending() : sortArrayInAscending()" class="disp-flex aic jcfe sort-header cp">
+        <div class="bottom-section" *ngIf="allComments && allComments.length > 0">
+            <div [ngClass]="{'sort-disabled': allComments.length < 2}" (click)="sortDescending ? sortArrayInAscending() : sortArrayInDescending()" class="disp-flex aic jcfe sort-header cp">
                 Sort by Date and Time 
                 <mat-icon *ngIf="sortAscending" class="sort-icn" matTooltip="Ascending">arrow_upward</mat-icon>
                 <mat-icon *ngIf="sortDescending" class="sort-icn" matTooltip="Descending">arrow_downward</mat-icon>
             </div>
-            <div *ngIf="allComments && allComments.length > 0" class="all-comments-parent">
+            <div class="all-comments-parent">
                 <div *ngFor="let comment of allComments; let i = index" class="all-comments mar-bot-16">
                     <div class="bg-whitesmoke all-com-pad pos-rel mar-bot-16">
                         <div class="disp-flex jcsb">
@@ -34,13 +34,13 @@
 
                             <div>
                                 <div>{{comment.dateTime | customDate }}</div>
-                                <div>{{comment.dateTime | date: 'shortTime' }}</div>
+                                <!-- <div>{{comment.dateTime | date: 'shortTime' }}</div> -->
                             </div>
                         </div>
                         <div class="all-comm-txt mar-bot-16" *ngIf="!comment.isEditingComment">
                             {{comment.comm_txt}}
                         </div>
-                        <div class="all-comm-txt mar-bot-16" *ngIf="comment.isEditingComment">
+                        <div class="all-comm-txt w-98 mar-bot-16" *ngIf="comment.isEditingComment">
                             <textarea class="comm-txt w-100" name="comment" id="comment" cols="30" rows="5"
                                 [(ngModel)]="comment.comm_txt" placeholder="Comment"></textarea>
                         </div>
@@ -62,8 +62,8 @@
                             <mat-icon class="del-icn cp" (click)="deleteComment(comment, i)">delete</mat-icon>
                         </div>
                     </div>
-                    <div *ngIf="comment.isReplying" class="add-reply-div">
-                        <app-replies [inpComment]="replyingToComment" (replyPosted)="replyPosted($event)"></app-replies>
+                    <div *ngIf="comment.isReplying" class="add-reply-div mar-bot-16">
+                        <app-replies [inpComment]="replyingToComment" (replyPosted)="replyPosted($event)" (replyCancelled)="replyCancelled()"></app-replies>
                     </div>
                     <div *ngIf="comment.replies.length > 0" class="all-replies-parent">
                         <div *ngFor="let reply of comment.replies; let j = index"
@@ -77,7 +77,7 @@
                             <div class="all-rep-txt mar-bot-16" *ngIf="!reply.isEditingReply">
                                 {{reply.reply_text}}
                             </div>
-                            <div class="all-comm-txt mar-bot-16" *ngIf="reply.isEditingReply">
+                            <div class="all-comm-txt w-95 mar-bot-16" *ngIf="reply.isEditingReply">
                                 <textarea class="comm-txt w-100" name="reply" id="reply" cols="30" rows="5"
                                     [(ngModel)]="reply.reply_text" placeholder="Reply"></textarea>
                             </div>

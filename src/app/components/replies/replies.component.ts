@@ -10,6 +10,7 @@ export class RepliesComponent implements OnInit {
   @Input() inpComment: comment_model = new comment_model();
 
   @Output() replyPosted = new EventEmitter();
+  @Output() replyCancelled = new EventEmitter();
 
   reply_name: string = "";
   reply_text: string = "";
@@ -17,11 +18,15 @@ export class RepliesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // console.log(this.inpComment);
   }
 
   ngOnChanges() {
-    console.log(this.inpComment);
+  }
+
+  cancelReply(){
+    this.reply_name = "";
+    this.reply_text = "";
+    this.replyCancelled.emit()
   }
 
   postReply(){
