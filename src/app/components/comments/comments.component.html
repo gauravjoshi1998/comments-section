@@ -1,0 +1,102 @@
+<div class="disp-flex jcc w-100">
+    <div class="comments-main-cont w-30">
+        <div class="top-section bg-whitesmoke">
+            <div class="header-section">
+                <h4>Comment</h4>
+            </div>
+            <div class="input-section">
+                <div class="name-inp-div">
+                    <input class="name-inp w-100" type="text" placeholder="Name" [(ngModel)]="user_name">
+                </div>
+                <div class="comm-txt-div">
+                    <textarea class="comm-txt w-100" name="comment" id="comment" cols="30" rows="5"
+                        [(ngModel)]="comment_text" placeholder="Comment"></textarea>
+                </div>
+                <div class="post-btn disp-flex jcfe">
+                    <button class="app-btn" (click)="postComment()" [disabled]="user_name == '' || comment_text == ''">POST</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div (click)="sortAscending ? sortArrayInDescending() : sortArrayInAscending()" class="disp-flex aic jcfe sort-header cp">
+                Sort by Date and Time 
+                <mat-icon *ngIf="sortAscending" class="sort-icn" matTooltip="Ascending">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortDescending" class="sort-icn" matTooltip="Descending">arrow_downward</mat-icon>
+            </div>
+            <div *ngIf="allComments && allComments.length > 0" class="all-comments-parent">
+                <div *ngFor="let comment of allComments; let i = index" class="all-comments mar-bot-16">
+                    <div class="bg-whitesmoke all-com-pad pos-rel mar-bot-16">
+                        <div class="disp-flex jcsb">
+                            <div class="all-comm-name mar-bot-16">
+                                <strong>{{comment.uname}}</strong>
+                            </div>
+
+                            <div>
+                                <div>{{comment.dateTime | customDate }}</div>
+                                <div>{{comment.dateTime | date: 'shortTime' }}</div>
+                            </div>
+                        </div>
+                        <div class="all-comm-txt mar-bot-16" *ngIf="!comment.isEditingComment">
+                            {{comment.comm_txt}}
+                        </div>
+                        <div class="all-comm-txt mar-bot-16" *ngIf="comment.isEditingComment">
+                            <textarea class="comm-txt w-100" name="comment" id="comment" cols="30" rows="5"
+                                [(ngModel)]="comment.comm_txt" placeholder="Comment"></textarea>
+                        </div>
+                        <div class="all-comm-actions disp-flex">
+                            <div (click)="replyToComment(comment, i)" class="all-comm-reply blue-txt cp">
+                                Reply
+                            </div>
+                            <div (click)="editComment(comment, i)" *ngIf="!comment.isEditingComment"
+                                class="all-comm-edit blue-txt cp">
+                                Edit
+                            </div>
+                            <div (click)="updateComment(comment, i)" *ngIf="comment.isEditingComment"
+                                class="all-comm-update blue-txt cp">
+                                Update
+                            </div>
+                        </div>
+
+                        <div class="del-icn-div">
+                            <mat-icon class="del-icn cp" (click)="deleteComment(comment, i)">delete</mat-icon>
+                        </div>
+                    </div>
+                    <div *ngIf="comment.isReplying" class="add-reply-div">
+                        <app-replies [inpComment]="replyingToComment" (replyPosted)="replyPosted($event)"></app-replies>
+                    </div>
+                    <div *ngIf="comment.replies.length > 0" class="all-replies-parent">
+                        <div *ngFor="let reply of comment.replies; let j = index"
+                            class="all-replies pos-rel bg-whitesmoke mar-bot-16">
+                            <div class="disp-flex jcsb">
+                                <div class="all-rep-name mar-bot-16">
+                                    <strong>{{reply.name}}</strong>
+                                </div>
+                                <div>{{reply.dateTime | customDate }}</div>
+                            </div>
+                            <div class="all-rep-txt mar-bot-16" *ngIf="!reply.isEditingReply">
+                                {{reply.reply_text}}
+                            </div>
+                            <div class="all-comm-txt mar-bot-16" *ngIf="reply.isEditingReply">
+                                <textarea class="comm-txt w-100" name="reply" id="reply" cols="30" rows="5"
+                                    [(ngModel)]="reply.reply_text" placeholder="Reply"></textarea>
+                            </div>
+                            <div (click)="editReply(comment, reply, j)" *ngIf="!reply.isEditingReply"
+                                class="all-rep-edit blue-txt cp">
+                                Edit
+                            </div>
+                            <div (click)="updateReply(comment, reply, j)" *ngIf="reply.isEditingReply"
+                                class="all-rep-update blue-txt cp">
+                                Update
+                            </div>
+
+                            <div class="del-icn-div">
+                                <mat-icon class="del-icn cp" (click)="deleteReply(comment, reply, j)">delete</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
