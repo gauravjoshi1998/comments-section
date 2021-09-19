@@ -1,5 +1,5 @@
 <div class="disp-flex jcc w-100">
-    <div class="comments-main-cont w-30">
+    <div class="comments-main-cont w-40">
         <div class="top-section bg-whitesmoke">
             <div class="header-section">
                 <h4>Comment</h4>
@@ -28,7 +28,7 @@
                 <div *ngFor="let comment of allComments; let i = index" class="all-comments mar-bot-16">
                     <div class="bg-whitesmoke all-com-pad pos-rel mar-bot-16">
                         <div class="disp-flex jcsb">
-                            <div class="all-comm-name mar-bot-16">
+                            <div class="all-comm-name w-70 mar-bot-16">
                                 <strong>{{comment.uname}}</strong>
                             </div>
 
@@ -37,7 +37,7 @@
                                 <!-- <div>{{comment.dateTime | date: 'shortTime' }}</div> -->
                             </div>
                         </div>
-                        <div class="all-comm-txt mar-bot-16" *ngIf="!comment.isEditingComment">
+                        <div class="all-comm-txt hide-overflow mar-bot-16" *ngIf="!comment.isEditingComment">
                             {{comment.comm_txt}}
                         </div>
                         <div class="all-comm-txt w-98 mar-bot-16" *ngIf="comment.isEditingComment">
